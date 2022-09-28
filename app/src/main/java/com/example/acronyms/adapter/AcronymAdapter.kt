@@ -6,9 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.acronyms.data.model.AcronymTestMoshiItem
 import com.example.acronyms.data.model.LfX
 import com.example.acronyms.databinding.ItemAcronymBinding
+import com.squareup.moshi.Moshi
 
 class AcronymAdapter : RecyclerView.Adapter<AcronymAdapter.AcronymViewHolder>() {
-    private val listAcronymsData = ArrayList<AcronymTestMoshiItem>()
+
+    private val listAcronymsData = mutableListOf<LfXJsonAdapter>()
+    private val moshi: Moshi = Moshi.Builder().build()
+    private var lfXJsonAdapter: LfXJsonAdapter = LfXJsonAdapter(moshi)
 //    private var onItemClickCallback: OnItemClickCallback? = null
 
 //    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
@@ -22,12 +26,13 @@ class AcronymAdapter : RecyclerView.Adapter<AcronymAdapter.AcronymViewHolder>() 
     }
 
     inner class AcronymViewHolder(val binding: ItemAcronymBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(acronym: AcronymTestMoshiItem) {
+        fun bind(acronym: LfXJsonAdapter) {
 //            binding.root.setOnClickListener {
 //                onItemClickCallback?.onItemClicked(acronym)
 //            }
             binding.apply {
-                tvAcronym.text = acronym.sf
+                tvAcronym.text = acronym.toString()
+                tvAcronym.text = acronym.fromJson("lf").toString()
                 tvAcronymMore.text = acronym.toString()
             }
         }

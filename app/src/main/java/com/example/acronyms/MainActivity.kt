@@ -9,7 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.acronyms.adapter.AcronymAdapter
+import com.example.acronyms.adapter.LfXJsonAdapter
+import com.example.acronyms.data.model.AcronymTestMoshiItem
 import com.example.acronyms.data.model.AcronymsViewModel
+import com.example.acronyms.data.model.LfX
 import com.example.acronyms.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,9 +32,7 @@ class MainActivity : AppCompatActivity() {
         adapter = AcronymAdapter()
         adapter.notifyDataSetChanged()
 
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
-            AcronymsViewModel::class.java
-        )
+        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[AcronymsViewModel::class.java]
 
         binding.apply {
             rvAcronym.layoutManager = LinearLayoutManager(this@MainActivity)
@@ -42,13 +43,13 @@ class MainActivity : AppCompatActivity() {
                 searchAcronyms()
             }
 
-//            etQuery.doAfterTextChanged {
-//                searchAcronyms()
-//            }
+            etQuery.doAfterTextChanged {
+                searchAcronyms()
+            }
         }
         viewModel.getSearchAcronyms().observe(this, {
             if (it != null) {
-                adapter.setList(it)
+                adapter.setList(it.copy())
                 showLoading(false)
             }
         })
@@ -62,11 +63,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun searchAcronyms() {
         binding.apply {
-            val query = etQuery.text.toString()
-            if (query != null) {
-                if (query.isEmpty()) return
-            }
-//            showLoading(true)
+            val sf = etQuery.text.toString()
+            if (sf.isNotEmpty()) return
+            showLoading(true)
             viewModel.setSearchAcronyms("HMM")
         }
     }
