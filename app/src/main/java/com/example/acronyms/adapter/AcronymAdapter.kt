@@ -3,34 +3,34 @@ package com.example.acronyms.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.acronyms.data.model.AcronymTestMoshiItem
-import com.example.acronyms.data.model.LfX
+import com.example.acronyms.data.model.AcronymList
 import com.example.acronyms.databinding.ItemAcronymBinding
-import com.squareup.moshi.Moshi
 
 class AcronymAdapter : RecyclerView.Adapter<AcronymAdapter.AcronymViewHolder>() {
 
-    private val listAcronymsData = mutableListOf<LfX>()
+    private val listAcronymsData = mutableListOf<List<AcronymList>>()
     private var onItemClickCallback: OnItemClickCallback? = null
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
-    fun setList(acronyms: List<LfX>) {
+    fun setList(acronyms: List<AcronymList>) {
         listAcronymsData.clear()
-        listAcronymsData.addAll(acronyms)
+        listAcronymsData.addAll(listOf(acronyms))
         notifyDataSetChanged()
     }
 
     inner class AcronymViewHolder(private val binding: ItemAcronymBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(acronym: LfX) {
+        fun bind(acronym: List<AcronymList>) {
             binding.root.setOnClickListener {
                 onItemClickCallback?.onItemClicked(acronym)
             }
             binding.apply {
-                tvAcronym.text = "Acronym: "
-                tvAcronymMore.text = acronym.lf
+                tvAcronym.text = "Acronym:"
+                if (acronym != null && !acronym.isNullOrEmpty()) {
+                    tvAcronymMore.text = acronym.first().lfs.first().lf
+                }
             }
         }
     }
@@ -47,6 +47,6 @@ class AcronymAdapter : RecyclerView.Adapter<AcronymAdapter.AcronymViewHolder>() 
     override fun getItemCount(): Int = listAcronymsData.size
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: LfX)
+        fun onItemClicked(data: List<AcronymList>)
     }
 }

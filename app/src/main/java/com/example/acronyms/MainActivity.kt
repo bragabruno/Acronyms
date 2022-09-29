@@ -1,22 +1,20 @@
 package com.example.acronyms
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.acronyms.adapter.AcronymAdapter
 import com.example.acronyms.data.model.AcronymsViewModel
-import com.example.acronyms.data.model.LfX
 import com.example.acronyms.databinding.ActivityMainBinding
+import org.json.JSONObject
+import org.json.JSONTokener
 
 class MainActivity : AppCompatActivity() {
-
-    companion object {
-        const val EXTRA_TEXT = "extra_lf"
-    }
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: AcronymsViewModel
@@ -42,12 +40,29 @@ class MainActivity : AppCompatActivity() {
             }
         }
         viewModel.getSearchAcronyms().observe(this, {
-            if (it != null) {
-                adapter.setList(it.lfs)
+            if (it != null && !it.isNullOrEmpty()) {
+                adapter.setList(it)
                 showLoading(false)
             }
         })
     }
+
+    fun jsonResponseTokenParse(response: String) {
+        val jsonObject: JSONObject? = JSONTokener(response).nextValue() as? JSONObject
+        val jsonArray = jsonObject?.getJSONArray("lfs")
+        if (jsonArray != null) {
+            for (i in 0 until jsonArray!!.length()) {
+                // sf
+                val sf = jsonArray.getJSONObject(i).getString("sf")
+                Log.i("sf: ", sf)
+
+                // lfs
+                val lfs = jsonArray.getJSONObject(i).getString("lfs")
+                Log.i("lfs: ", lfs)
+            }
+        }
+    }
+    
 
     override fun onResume() {
         super.onResume()

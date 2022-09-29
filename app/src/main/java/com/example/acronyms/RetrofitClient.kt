@@ -1,6 +1,7 @@
 package com.example.acronyms
 
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 object RetrofitClient {
@@ -9,7 +10,7 @@ object RetrofitClient {
 
     val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create())
         .build()
 
     val apiInstance: Api = retrofit.create(Api::class.java)
