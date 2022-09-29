@@ -10,30 +10,27 @@ import com.squareup.moshi.Moshi
 
 class AcronymAdapter : RecyclerView.Adapter<AcronymAdapter.AcronymViewHolder>() {
 
-    private val listAcronymsData = mutableListOf<LfXJsonAdapter>()
-    private val moshi: Moshi = Moshi.Builder().build()
-    private var lfXJsonAdapter: LfXJsonAdapter = LfXJsonAdapter(moshi)
-//    private var onItemClickCallback: OnItemClickCallback? = null
+    private val listAcronymsData = mutableListOf<LfX>()
+    private var onItemClickCallback: OnItemClickCallback? = null
 
-//    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
-//        this.onItemClickCallback = onItemClickCallback
-//    }
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
 
-    fun setList(acronyms: AcronymTestMoshiItem) {
+    fun setList(acronyms: List<LfX>) {
         listAcronymsData.clear()
-        listAcronymsData.addAll(arrayOf())
+        listAcronymsData.addAll(acronyms)
         notifyDataSetChanged()
     }
 
-    inner class AcronymViewHolder(val binding: ItemAcronymBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(acronym: LfXJsonAdapter) {
-//            binding.root.setOnClickListener {
-//                onItemClickCallback?.onItemClicked(acronym)
-//            }
+    inner class AcronymViewHolder(private val binding: ItemAcronymBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(acronym: LfX) {
+            binding.root.setOnClickListener {
+                onItemClickCallback?.onItemClicked(acronym)
+            }
             binding.apply {
-                tvAcronym.text = acronym.toString()
-                tvAcronym.text = acronym.fromJson("lf").toString()
-                tvAcronymMore.text = acronym.toString()
+                tvAcronym.text = "Acronym: "
+                tvAcronymMore.text = acronym.lf
             }
         }
     }

@@ -24,11 +24,8 @@ class AcronymsViewModel : ViewModel() {
                     if (!response.isSuccessful) {
                         Log.d("Unsuccessful", "Unsuccessful Acronyms Search Response!")
                     }
-                        listAcronyms.postValue(response.body()!!)
-                        val lfs = response.body()!!
-                        val item = lfs.lfs
-                        val lf0 = item.listIterator(0)
-                        Log.d("Success", "Successful Acronyms Search Response!")
+                    listAcronyms.postValue(response.body()!!)
+                    Log.d("Success", "Successful Acronyms Search Response!")
                 }
                 override fun onFailure(call: Call<AcronymTestMoshiItem>, t: Throwable) {
                     Log.d("Failure", t.message.toString())
@@ -37,9 +34,6 @@ class AcronymsViewModel : ViewModel() {
     }
 
     fun getSearchAcronyms(): LiveData<AcronymTestMoshiItem> {
-        val lfs = response.body()!!
-        val item = lfs.lfs
-        val lf0 = item.listIterator(0)
         return listAcronyms
     }
 }
