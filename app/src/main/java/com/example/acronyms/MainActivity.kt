@@ -47,23 +47,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun jsonResponseTokenParse(response: String) {
-        val jsonObject: JSONObject? = JSONTokener(response).nextValue() as? JSONObject
-        val jsonArray = jsonObject?.getJSONArray("lfs")
-        if (jsonArray != null) {
-            for (i in 0 until jsonArray!!.length()) {
-                // sf
-                val sf = jsonArray.getJSONObject(i).getString("sf")
-                Log.i("sf: ", sf)
-
-                // lfs
-                val lfs = jsonArray.getJSONObject(i).getString("lfs")
-                Log.i("lfs: ", lfs)
-            }
-        }
-    }
-    
-
     override fun onResume() {
         super.onResume()
         binding.apply {

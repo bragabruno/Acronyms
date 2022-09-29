@@ -28,9 +28,7 @@ class AcronymAdapter : RecyclerView.Adapter<AcronymAdapter.AcronymViewHolder>() 
             }
             binding.apply {
                 tvAcronym.text = "Acronym:"
-                if (acronym != null && !acronym.isNullOrEmpty()) {
-                    tvAcronymMore.text = acronym.first().lfs.first().lf
-                }
+                tvAcronymMore.text = acronym.first().lfs.first().lf
             }
         }
     }
